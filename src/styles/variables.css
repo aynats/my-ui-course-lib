@@ -1,4 +1,6 @@
 :root {
+  --outline-color: #17171B;
+
   --btn-fill-bg: #17171B;
   --btn-fill-bg-hover: #2D2D33;
   --btn-fill-bg-active: #050506;

@@ -9,8 +9,12 @@
 	font-family: var(--btn-font-family);
 	font-weight: var(--btn-font-weight);
 	cursor: pointer;
-	outline: none;
 	white-space: nowrap;
+}
+
+.button:focus-visible {
+	outline-color: var(--outline-color);
+	outline-offset: 4px;
 }
 
 .size-S {
@@ -28,7 +32,6 @@
   font-size: var(--btn-M-font-size);
   line-height: var(--btn-M-line-height);
 }
-
 
 .size-L {
   height: var(--btn-L-height);
