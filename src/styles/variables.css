@@ -1,0 +1,45 @@
+:root {
+  --btn-fill-bg: #17171B;
+  --btn-fill-bg-hover: #2D2D33;
+  --btn-fill-bg-active: #050506;
+  --btn-fill-bg-disabled: rgba(23, 23, 27, 0.4);
+  --btn-fill-text: #FFFFFF;
+
+  --btn-outline-border: #17171B;
+  --btn-outline-text: #17171B;
+  --btn-outline-bg-hover: #F4F4F5;
+  --btn-outline-bg-active: #E7E7EA;
+  --btn-outline-border-disabled: rgba(23, 23, 27, 0.4);
+  --btn-outline-text-disabled: rgba(23, 23, 27, 0.4);
+
+  --btn-text-text: #17171B;
+  --btn-text-bg-hover: #F4F4F5;
+  --btn-text-bg-active: #E7E7EA;
+  --btn-text-text-disabled: rgba(23, 23, 27, 0.4);
+
+  --btn-radius: 10px;
+  --btn-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --btn-gap: 8px;
+  --btn-font-weight: 600;
+
+  /* S */
+  --btn-S-height: 36px;
+  --btn-S-min-width: 140px;
+  --btn-S-padding-x: 16px;
+  --btn-S-font-size: 14px;
+  --btn-S-line-height: 20px;
+
+  /* M */
+  --btn-M-height: 44px;
+  --btn-M-min-width: 140px;
+  --btn-M-padding-x: 20px;
+  --btn-M-font-size: 16px;
+  --btn-M-line-height: 24px;
+
+  /* L */
+  --btn-L-height: 52px;
+  --btn-L-min-width: 150px;
+  --btn-L-padding-x: 24px;
+  --btn-L-font-size: 18px;
+  --btn-L-line-height: 28px;
+}

@@ -1,0 +1,99 @@
+.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--btn-gap);
+	box-sizing: border-box;
+	border: 1px solid transparent;
+	border-radius: var(--btn-radius);
+	font-family: var(--btn-font-family);
+	font-weight: var(--btn-font-weight);
+	cursor: pointer;
+	outline: none;
+	white-space: nowrap;
+}
+
+.size-S {
+  height: var(--btn-S-height);
+  min-width: var(--btn-S-min-width);
+  padding: 0 var(--btn-S-padding-x);
+  font-size: var(--btn-S-font-size);
+  line-height: var(--btn-S-line-height);
+}
+
+.size-M {
+  height: var(--btn-M-height);
+  min-width: var(--btn-M-min-width);
+  padding: 0 var(--btn-M-padding-x);
+  font-size: var(--btn-M-font-size);
+  line-height: var(--btn-M-line-height);
+}
+
+
+.size-L {
+  height: var(--btn-L-height);
+  min-width: var(--btn-L-min-width);
+  padding: 0 var(--btn-L-padding-x);
+  font-size: var(--btn-L-font-size);
+  line-height: var(--btn-L-line-height);
+}
+
+/* FILL */
+.variant-fill {
+	background-color: var(--btn-fill-bg);
+	color: var(--btn-fill-text);
+}
+
+.variant-fill:hover:not(:disabled) {
+	background-color: var(--btn-fill-bg-hover);
+}
+
+.variant-fill:active:not(:disabled) {
+	background-color: var(--btn-fill-bg-active);
+}
+
+.variant-fill:disabled {
+	background-color: var(--btn-fill-bg-disabled);
+	color: var(--btn-fill-text);
+	cursor: not-allowed;
+}
+
+/* OUTLINE */
+.variant-outline {
+	background-color: transparent;
+	border-color: var(--btn-outline-border);
+	color: var(--btn-outline-text);
+}
+
+.variant-outline:hover:not(:disabled) {
+	background-color: var(--btn-outline-bg-hover);
+}
+
+.variant-outline:active:not(:disabled) {
+	background-color: var(--btn-outline-bg-active);
+}
+
+.variant-outline:disabled {
+	border-color: var(--btn-outline-border-disabled);
+	color: var(--btn-outline-text-disabled);
+	cursor: not-allowed;
+}
+
+/* TEXT */
+.variant-text {
+	background-color: transparent;
+	color: var(--btn-text-text);
+}
+
+.variant-text:hover:not(:disabled) {
+	background-color: var(--btn-text-bg-hover);
+}
+
+.variant-text:active:not(:disabled) {
+	background-color: var(--btn-text-bg-active);
+}
+
+.variant-text:disabled {
+	color: var(--btn-text-text-disabled);
+	cursor: not-allowed;
+}
