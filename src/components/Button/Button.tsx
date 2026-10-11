@@ -1,36 +1,38 @@
-import React, { type ComponentPropsWithRef } from 'react';
+import type {
+  ComponentPropsWithRef, ReactNode,
+} from 'react';
 import styles from './Button.module.css';
 
 export type ButtonVariant = 'fill' | 'outline' | 'text';
 export type ButtonSize = 'S' | 'M' | 'L';
 
-type BaseButtonProps = {
+type BaseProps = {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
-// 2. Пропсы конкретно для кнопки
-type AsButtonProps = BaseButtonProps & ComponentPropsWithRef<'button'> & {
+type AsButtonProps = BaseProps & {
   as?: 'button';
-};
+} & Omit<ComponentPropsWithRef<'button'>, keyof BaseProps | 'as'>;
 
-// 3. Пропсы конкретно для ссылки
-type AsLinkProps = BaseButtonProps & ComponentPropsWithRef<'a'> & {
-  as: 'a'; // Для ссылки этот пропс обязателен
-};
+type AsLinkProps = BaseProps & {
+  as: 'a';
+  href: string;
+} & Omit<ComponentPropsWithRef<'a'>,
+  keyof BaseProps | 'as' | 'href' | 'disabled'
+>;
 
-// 4. Объединяем их: теперь компонент может быть либо одним, либо другим
 export type ButtonProps = AsButtonProps | AsLinkProps;
 
-export const Button = ({
-  variant = 'fill',
-  size = 'M',
-  className = '',
-  children,
-  as = 'button',
-  ...rest
-}: ButtonProps) => {
+export const Button = (props: ButtonProps) => {
+  const {
+    variant = 'fill',
+    size = 'M',
+    className = '',
+    children,
+  } = props;
+
   const buttonClasses = [
     styles.button,
     styles[`variant-${variant}`],
@@ -38,14 +40,31 @@ export const Button = ({
     className,
   ].filter(Boolean).join(' ');
 
-  const Tag = as as React.ElementType;
+  if (props.as === 'a') {
+    const { as, ref, ...rest } = props;
+
+    return (
+      <a ref={ref} className={buttonClasses} {...rest}>
+        {children}
+      </a>
+    );
+  }
+
+  const { as, ref, ...rest } = props;
 
   return (
-    <Tag
-      className={buttonClasses}
-      {...rest}
-    >
+    <button ref={ref} className={buttonClasses} {...rest}>
       {children}
-    </Tag>
+    </button>
   );
+
+  // const { as, ref, ...rest } = props;
+
+  // const Tag = as as ElementType;
+
+  // return (
+  //   <Tag ref={ref} className={buttonClasses} {...rest}> // Тут TS не понимает, какой тип ему прилетел
+  //     {children}                                        // И не работает, кидает warning
+  //   </Tag>                                              // Поэтому приходится сужать типы (вверху)
+  // );
 };

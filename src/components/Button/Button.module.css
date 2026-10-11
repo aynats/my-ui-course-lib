@@ -10,35 +10,36 @@
 	font-weight: var(--btn-font-weight);
 	cursor: pointer;
 	white-space: nowrap;
+	text-decoration: none;
 }
 
 .button:focus-visible {
-	outline-color: var(--outline-color);
+	outline: 2px solid var(--outline-color);
 	outline-offset: 4px;
 }
 
 .size-S {
-  height: var(--btn-S-height);
-  min-width: var(--btn-S-min-width);
-  padding: 0 var(--btn-S-padding-x);
-  font-size: var(--btn-S-font-size);
-  line-height: var(--btn-S-line-height);
+	height: var(--btn-S-height);
+	min-width: var(--btn-S-min-width);
+	padding: 0 var(--btn-S-padding-x);
+	font-size: var(--btn-S-font-size);
+	line-height: var(--btn-S-line-height);
 }
 
 .size-M {
-  height: var(--btn-M-height);
-  min-width: var(--btn-M-min-width);
-  padding: 0 var(--btn-M-padding-x);
-  font-size: var(--btn-M-font-size);
-  line-height: var(--btn-M-line-height);
+	height: var(--btn-M-height);
+	min-width: var(--btn-M-min-width);
+	padding: 0 var(--btn-M-padding-x);
+	font-size: var(--btn-M-font-size);
+	line-height: var(--btn-M-line-height);
 }
 
 .size-L {
-  height: var(--btn-L-height);
-  min-width: var(--btn-L-min-width);
-  padding: 0 var(--btn-L-padding-x);
-  font-size: var(--btn-L-font-size);
-  line-height: var(--btn-L-line-height);
+	height: var(--btn-L-height);
+	min-width: var(--btn-L-min-width);
+	padding: 0 var(--btn-L-padding-x);
+	font-size: var(--btn-L-font-size);
+	line-height: var(--btn-L-line-height);
 }
 
 /* FILL */

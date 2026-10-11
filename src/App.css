@@ -44,3 +44,13 @@
   margin-bottom: 32px;
   align-items: flex-start;
 }
+
+.ref-example {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.ref-input {
+  height: 24px;
+}

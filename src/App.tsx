@@ -1,6 +1,5 @@
 import { Button } from './components/Button/Button';
 import './styles/variables.css';
-import '@fontsource/inter/600.css';
 import './App.css';
 
 import { DatePicker } from './components/DatePicker/DatePicker';
@@ -11,23 +10,29 @@ function App() {
   const variants = ['fill', 'outline', 'text'] as const;
   const sizes = ['S', 'M', 'L'] as const;
 
-  const testRef = React.useRef(null);
-  const testInputRef = React.useRef<HTMLInputElement>(null);
+  const testButtonRef = React.useRef<HTMLButtonElement>(null);
+  const testInputRefButton = React.useRef<HTMLInputElement>(null);
   return (
     <>
-      <input type="text" ref={testInputRef}></input>
-      <Button ref={testRef} onClick={() => console.log(testRef.current)}>
-        123
-      </Button>
+      <div className="ref-example">
+        <input type="text" ref={testInputRefButton} className="ref-input" name="input" />
+        <Button ref={testButtonRef} onClick={() => {
+          testInputRefButton.current?.focus();
+          console.log(testInputRefButton.current);
+        }}>
+          Хочу на инпут!
+        </Button >
+      </div>
+
       <div className="button-wrapper">
         {variants.map((variant) => (
           <div className="button-row" key={variant}>
             <div className="row-title">{variant}</div>
             {sizes.map((size) => (
               <div className="button-item" key={size}>
-                <Button variant={variant} size={size} as='button'>Кнопка</Button>
+                <Button variant={variant} size={size}>Кнопка</Button>
                 <Button variant={variant} size={size} disabled>Кнопка</Button>
-                <Button variant={variant} size={size} as='a' href='/'>Кнопка</Button>
+                <Button variant={variant} size={size} as='a' href='/'>Ссылка</Button>
               </div>
             ))}
           </div>
