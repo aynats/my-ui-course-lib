@@ -69,6 +69,8 @@ export const Button = (props: ButtonProps) => {
     );
   }
 
+  // Избегаем ситуации, когда в формах кнопка отправляет форму. Делаем дефолт тип
+  // Чтобы для submit разработчик переопределял уже самостоятельно.
   const { as, ref, type = 'button', ...rest } = props;
 
   return (
