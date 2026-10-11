@@ -50,10 +50,10 @@ export const Button = (props: ButtonProps) => {
     );
   }
 
-  const { as, ref, ...rest } = props;
+  const { as, ref, type = 'button', ...rest } = props;
 
   return (
-    <button ref={ref} className={buttonClasses} {...rest}>
+    <button ref={ref} type={type} className={buttonClasses} {...rest}>
       {children}
     </button>
   );
