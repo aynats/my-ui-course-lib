@@ -1,7 +1,9 @@
 import type {
   ComponentPropsWithRef, ReactNode,
 } from 'react';
-import styles from './Button.module.css';
+//import styles from './Button.module.css';
+
+import * as styles from './Button.css';
 
 export type ButtonVariant = 'fill' | 'outline' | 'text';
 export type ButtonSize = 'S' | 'M' | 'L';
@@ -33,12 +35,26 @@ export const Button = (props: ButtonProps) => {
     children,
   } = props;
 
+  const variantClasses = {
+    fill: styles.variantFill,
+    outline: styles.variantOutline,
+    text: styles.variantText,
+  };
+
+  const sizeClasses = {
+    S: styles.sizeS,
+    M: styles.sizeM,
+    L: styles.sizeL,
+  };
+
   const buttonClasses = [
     styles.button,
-    styles[`variant-${variant}`],
-    styles[`size-${size}`],
+    variantClasses[variant],
+    sizeClasses[size],
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   if (props.as === 'a') {
     const { as, ref, ...rest } = props;
