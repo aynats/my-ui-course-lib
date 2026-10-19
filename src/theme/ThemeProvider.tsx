@@ -6,7 +6,7 @@ export type ThemeTokens = Partial<{
   [K in keyof typeof vars]: string;
 }>;
 
-type ThemeContextProps = {
+type ThemeProviderProps = {
   tokens?: ThemeTokens;
   children: ReactNode;
 };
@@ -14,7 +14,7 @@ type ThemeContextProps = {
 export const ThemeProvider = ({
   tokens = {},
   children,
-}: ThemeContextProps) => {
+}: ThemeProviderProps) => {
   const style = assignInlineVars(
     Object.fromEntries(
       Object.entries(tokens).map(([key, value]) => [
