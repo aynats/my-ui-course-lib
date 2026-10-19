@@ -30,18 +30,21 @@ export const [themeClass, vars] = createTheme({
   buttonSmallHeight: '36px',
   buttonSmallMinWidth: '140px',
   buttonSmallPaddingX: '16px',
+  buttonSmallPaddingY: '0px',
   buttonSmallFontSize: '14px',
   buttonSmallLineHeight: '20px',
 
   buttonMediumHeight: '44px',
   buttonMediumMinWidth: '140px',
   buttonMediumPaddingX: '20px',
+  buttonMediumPaddingY: '0px',
   buttonMediumFontSize: '16px',
   buttonMediumLineHeight: '24px',
 
   buttonLargeHeight: '52px',
   buttonLargeMinWidth: '150px',
   buttonLargePaddingX: '24px',
+  buttonLargePaddingY: '0px',
   buttonLargeFontSize: '18px',
   buttonLargeLineHeight: '28px',
 });

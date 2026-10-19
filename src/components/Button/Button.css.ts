@@ -26,21 +26,21 @@ export const sizeVariants = styleVariants({
   S: {
     height: vars.buttonSmallHeight,
     minWidth: vars.buttonSmallMinWidth,
-    padding: `0 ${vars.buttonSmallPaddingX}`,
+    padding: `${vars.buttonSmallPaddingY} ${vars.buttonSmallPaddingX}`,
     fontSize: vars.buttonSmallFontSize,
     lineHeight: vars.buttonSmallLineHeight,
   },
   M: {
     height: vars.buttonMediumHeight,
     minWidth: vars.buttonMediumMinWidth,
-    padding: `0 ${vars.buttonMediumPaddingX}`,
+    padding: `${vars.buttonMediumPaddingY} ${vars.buttonMediumPaddingX}`,
     fontSize: vars.buttonMediumFontSize,
     lineHeight: vars.buttonMediumLineHeight,
   },
   L: {
     height: vars.buttonLargeHeight,
     minWidth: vars.buttonLargeMinWidth,
-    padding: `0 ${vars.buttonLargePaddingX}`,
+    padding: `${vars.buttonLargePaddingY} ${vars.buttonLargePaddingX}`,
     fontSize: vars.buttonLargeFontSize,
     lineHeight: vars.buttonLargeLineHeight,
   }
