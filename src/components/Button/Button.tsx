@@ -35,16 +35,10 @@ export const Button = (props: ButtonProps) => {
     children,
   } = props;
 
-  const sizeClasses = {
-    S: styles.sizeS,
-    M: styles.sizeM,
-    L: styles.sizeL,
-  };
-
   const buttonClasses = [
     styles.button,
     styles.variantVariants[variant],
-    sizeClasses[size],
+    styles.sizeVariants[size],
     className,
   ]
     .filter(Boolean)
