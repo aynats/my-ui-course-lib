@@ -39,7 +39,6 @@ export interface DatePickerProps {
   className?: string;
 }
 
-const MONTHS = 12;
 const DAYS_IN_WEEK = 7;
 
 const isSameDay = (a: Date, b: Date) =>

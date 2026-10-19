@@ -6,8 +6,8 @@ import './App.css';
 import { DatePicker } from './components/DatePicker/DatePicker';
 import './styles/DatePicker.variables.css';
 
-import { themeClass } from './theme/theme.css';
-import { ThemeContext } from './theme/ThemeContext';
+import { themeClass, vars } from './theme/theme.css';
+import { ThemeProvider } from './theme/ThemeProvider';
 
 function App() {
   const variants = ['fill', 'outline', 'text'] as const;
@@ -15,6 +15,10 @@ function App() {
 
   const testButtonRef = React.useRef<HTMLButtonElement>(null);
   const testInputRefButton = React.useRef<HTMLInputElement>(null);
+
+  console.log(themeClass);
+  console.log(vars);
+
   return (
     <div className={themeClass}>
       <div className="ref-example">
@@ -40,7 +44,8 @@ function App() {
             ))}
           </div>
         ))}
-        <ThemeContext
+
+        <ThemeProvider
           tokens={{
             buttonFillBg: '#7C3AED',
             buttonFillBgHover: '#6D28D9',
@@ -55,15 +60,16 @@ function App() {
             <Button>Тематическая кнопка</Button>
             <Button variant={'outline'} size={'L'}>Кнопка</Button>
           </div>
-        </ThemeContext>
+        </ThemeProvider>
 
-        <ThemeContext
+        <ThemeProvider
           tokens={{
             buttonFillBg: '#047857',
             buttonFillBgHover: '#065F46',
             buttonFillBgActive: '#064E3B',
             buttonFillBgDisabled: 'rgba(4, 120, 87, 0.4)',
             buttonFillTextColor: '#FFFFFF',
+
 
             buttonOutlineBorderColor: '#047857',
             buttonOutlineTextColor: '#047857',
@@ -91,7 +97,7 @@ function App() {
             </Button>
           </div>
 
-        </ThemeContext>
+        </ThemeProvider>
       </div>
       <div className="datepicker-wrapper">
         <h2>DatePicker</h2>

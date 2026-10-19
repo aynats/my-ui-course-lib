@@ -35,12 +35,6 @@ export const Button = (props: ButtonProps) => {
     children,
   } = props;
 
-  const variantClasses = {
-    fill: styles.variantFill,
-    outline: styles.variantOutline,
-    text: styles.variantText,
-  };
-
   const sizeClasses = {
     S: styles.sizeS,
     M: styles.sizeM,
@@ -49,7 +43,7 @@ export const Button = (props: ButtonProps) => {
 
   const buttonClasses = [
     styles.button,
-    variantClasses[variant],
+    styles.variantVariants[variant],
     sizeClasses[size],
     className,
   ]

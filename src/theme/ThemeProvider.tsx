@@ -2,16 +2,16 @@ import type { ReactNode, CSSProperties } from 'react';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { vars } from './theme.css';
 
-export type ButtonThemeTokens = Partial<{
+export type ThemeTokens = Partial<{
   [K in keyof typeof vars]: string;
 }>;
 
 type ThemeContextProps = {
-  tokens?: ButtonThemeTokens;
+  tokens?: ThemeTokens;
   children: ReactNode;
 };
 
-export const ThemeContext = ({
+export const ThemeProvider = ({
   tokens = {},
   children,
 }: ThemeContextProps) => {

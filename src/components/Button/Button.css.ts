@@ -1,6 +1,6 @@
 
-import { style } from '@vanilla-extract/css';
-import { vars } from '../../theme/theme.css';
+import { style, styleVariants } from '@vanilla-extract/css';
+import { vars } from '../../theme/theme.css.ts';
 
 export const button = style({
     display: 'inline-flex',
@@ -47,64 +47,63 @@ export const sizeL = style({
     lineHeight: vars.buttonLargeLineHeight,
 });
 
-// FILL
-export const variantFill = style({
-    backgroundColor: vars.buttonFillBg,
-    color: vars.buttonFillTextColor,
-
-    ':hover': {
-        backgroundColor: vars.buttonFillBgHover,
-    },
-
-    ':active': {
-        backgroundColor: vars.buttonFillBgActive,
-    },
-
-    ':disabled': {
-        backgroundColor: vars.buttonFillBgDisabled,
+export const variantVariants = styleVariants({
+    fill: {
+        backgroundColor: vars.buttonFillBg,
         color: vars.buttonFillTextColor,
-        cursor: 'not-allowed',
-    },
-});
 
-// OUTLINE
-export const variantOutline = style({
-    backgroundColor: 'transparent',
-    borderColor: vars.buttonOutlineBorderColor,
-    color: vars.buttonOutlineTextColor,
-
-    selectors: {
-        '&:hover:not(:disabled)': {
-            backgroundColor: vars.buttonOutlineBgHover,
+        ':hover': {
+            backgroundColor: vars.buttonFillBgHover,
         },
-        '&:active:not(:disabled)': {
-            backgroundColor: vars.buttonOutlineBgActive,
+
+        ':active': {
+            backgroundColor: vars.buttonFillBgActive,
+        },
+
+        ':disabled': {
+            backgroundColor: vars.buttonFillBgDisabled,
+            color: vars.buttonFillTextColor,
+            cursor: 'not-allowed',
         },
     },
 
-    ':disabled': {
-        borderColor: vars.buttonOutlineBorderDisabled,
-        color: vars.buttonOutlineTextColorDisabled,
-        cursor: 'not-allowed',
-    },
-});
+    outline: {
+        backgroundColor: 'transparent',
+        borderColor: vars.buttonOutlineBorderColor,
+        color: vars.buttonOutlineTextColor,
 
-// TEXT
-export const variantText = style({
-    backgroundColor: 'transparent',
-    color: vars.buttonTextTextColor,
-
-    selectors: {
-        '&:hover:not(:disabled)': {
-            backgroundColor: vars.buttonTextBgHover,
+        selectors: {
+            '&:hover:not(:disabled)': {
+                backgroundColor: vars.buttonOutlineBgHover,
+            },
+            '&:active:not(:disabled)': {
+                backgroundColor: vars.buttonOutlineBgActive,
+            },
         },
-        '&:active:not(:disabled)': {
-            backgroundColor: vars.buttonTextBgActive,
+
+        ':disabled': {
+            borderColor: vars.buttonOutlineBorderDisabled,
+            color: vars.buttonOutlineTextColorDisabled,
+            cursor: 'not-allowed',
         },
     },
 
-    ':disabled': {
-        color: vars.buttonTextTextColorDisabled,
-        cursor: 'not-allowed',
+    text: {
+        backgroundColor: 'transparent',
+        color: vars.buttonTextTextColor,
+
+        selectors: {
+            '&:hover:not(:disabled)': {
+                backgroundColor: vars.buttonTextBgHover,
+            },
+            '&:active:not(:disabled)': {
+                backgroundColor: vars.buttonTextBgActive,
+            },
+        },
+
+        ':disabled': {
+            color: vars.buttonTextTextColorDisabled,
+            cursor: 'not-allowed',
+        },
     },
 });
