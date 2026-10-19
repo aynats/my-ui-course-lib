@@ -1,4 +1,4 @@
-import type { ReactNode, CSSProperties } from 'react';
+import type { ReactNode } from 'react';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { vars } from './theme.css';
 
@@ -11,22 +11,21 @@ type ThemeProviderProps = {
   children: ReactNode;
 };
 
-export const ThemeProvider = ({
-  tokens = {},
-  children,
-}: ThemeProviderProps) => {
+// Привели тип vars[token] от string к непосредственно названиям vars
+function typedEntries<T extends object>(object: T) {
+  return Object.entries(object) as [keyof T, T[keyof T]][];
+}
+
+export const ThemeProvider = ({ tokens = {}, children }: ThemeProviderProps) => {
   const style = assignInlineVars(
     Object.fromEntries(
-      Object.entries(tokens).map(([key, value]) => [
-        vars[key as keyof typeof vars],
+      typedEntries(tokens).map(([token, value]) => [
+        vars[token],
         value,
       ]),
     ),
   );
-
-  return (
-    <div style={style as CSSProperties}>
-      {children}
-    </div>
-  );
+  // В assignInlineVars возвращается совместимый с реактом тип, поэтому не указываем каст cssprops
+  return <div style={style}>{children}</div>;
 };
+
