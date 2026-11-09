@@ -72,7 +72,17 @@ export const Button = (props: ButtonProps) => {
   );
 
   if (props.as === 'a') {
-    const { as, ref, startIcon, endIcon, ...rest } = props;
+    const {
+      as,
+      ref,
+      variant,
+      size,
+      density,
+      className,
+      children,
+      startIcon,
+      endIcon,
+      ...rest } = props;
 
     return (
       <a ref={ref} className={buttonClasses} {...rest}>

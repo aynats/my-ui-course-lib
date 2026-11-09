@@ -131,6 +131,7 @@ export const densityVariants = styleVariants({
   default: {},
 
   compact: {
+    minWidth: 0,
     paddingInlineStart: vars.buttonCompactPaddingInlineStart,
     paddingInlineEnd: vars.buttonCompactPaddingInlineEnd,
   },

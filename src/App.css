@@ -54,3 +54,17 @@
 .ref-input {
   height: 24px;
 }
+
+/* CALENDAR */
+.calendar-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 40px;
+}
+
+.calendar-row {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}

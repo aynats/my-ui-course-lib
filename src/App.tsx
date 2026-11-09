@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from './components/Button/Button';
 import './styles/variables.css';
 import './App.css';
@@ -9,6 +9,7 @@ import './styles/DatePicker.variables.css';
 import { themeClass, vars } from './theme/theme.css';
 import { ThemeProvider } from './theme/ThemeProvider';
 import { CalendarIcon } from './components/CalendarIcon/CalendarIcon';
+import { Calendar } from './components/Calendar/Calendar';
 
 function App() {
   const variants = ['fill', 'outline', 'text'] as const;
@@ -19,6 +20,10 @@ function App() {
 
   console.log(themeClass);
   console.log(vars);
+
+  const [date, setDate] = useState<Date | null>(
+    new Date(2026, 10, 17),
+  );
 
   return (
     <div className={themeClass}>
@@ -101,6 +106,30 @@ function App() {
 
         </ThemeProvider>
       </div>
+
+      <div className='calendar-wrapper'>
+        <h2>Calendar</h2>
+        <div className={`calendar-row ${themeClass}`}>
+          <Calendar
+            value={date}
+            onValueChange={setDate}
+            locale={"ru-RU"}
+          />
+
+          <Calendar
+            value={date}
+            onValueChange={setDate}
+            locale={"en-US"}
+          />
+
+          <Calendar
+            value={date}
+            onValueChange={setDate}
+            locale={"ar-EG"}
+          />
+        </div>
+      </div>
+
       <div className="datepicker-wrapper">
         <h2>DatePicker</h2>
 

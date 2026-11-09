@@ -50,4 +50,59 @@ export const [themeClass, vars] = createTheme({
 
   buttonCompactPaddingInlineStart: '12px',
   buttonCompactPaddingInlineEnd: '16px',
+
+  calendarWidth: '286px',
+  calendarPadding: '16px',
+  calendarBorderWidth: '1px',
+  calendarBorderRadius: '12px',
+  calendarBorderColor: '#E4E4E7',
+  calendarBg: '#FFFFFF',
+
+  calendarFontFamily:
+    "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+
+  calendarTextColor: '#18181B',
+  calendarMutedTextColor: '#A1A1AA',
+  calendarWeekendTextColor: '#A1A1AA',
+  calendarDisabledTextColor: '#D4D4D8',
+
+  calendarTitleFontSize: '15px',
+  calendarTitleFontWeight: '600',
+
+  calendarWeekdayFontSize: '11px',
+  calendarWeekdayFontWeight: '500',
+
+  calendarDayFontSize: '14px',
+  calendarDayFontWeight: '400',
+  calendarSelectedDayFontWeight: '600',
+
+  calendarFooterFontSize: '13px',
+  calendarFooterFontWeight: '400',
+
+  calendarSectionGap: '12px',
+  
+  calendarWeekGap: '4px',
+
+  calendarWeekdayHeight: '28px',
+
+  calendarDaySize: '36px',
+  calendarDayBorderRadius: '8px',
+
+  calendarDayHoverBg: '#F4F4F5',
+  calendarDayActiveBg: '#E4E4E7',
+  calendarSelectedBg: '#18181B',
+  calendarSelectedTextColor: '#FFFFFF',
+
+  calendarFocusColor: '#18181B',
+  calendarFocusWidth: '2px',
+  calendarFocusOffset: '2px',
+
+  calendarTodayDotSize: '4px',
+  calendarTodayDotOffset: '3px',
+
+  calendarNavigationSize: '36px',
+  calendarNavigationBorderRadius: '8px',
+  calendarNavigationIconSize: '12px',
+
+  calendarFooterPaddingBlock: '16px',
 });
