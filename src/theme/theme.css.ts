@@ -47,4 +47,7 @@ export const [themeClass, vars] = createTheme({
   buttonLargePaddingY: '0px',
   buttonLargeFontSize: '18px',
   buttonLargeLineHeight: '28px',
+
+  buttonCompactPaddingInlineStart: '12px',
+  buttonCompactPaddingInlineEnd: '16px',
 });

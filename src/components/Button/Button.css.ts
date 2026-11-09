@@ -26,21 +26,24 @@ export const sizeVariants = styleVariants({
   S: {
     height: vars.buttonSmallHeight,
     minWidth: vars.buttonSmallMinWidth,
-    padding: `${vars.buttonSmallPaddingY} ${vars.buttonSmallPaddingX}`,
+    paddingY: vars.buttonSmallPaddingY,
+    paddingX: vars.buttonSmallPaddingX,
     fontSize: vars.buttonSmallFontSize,
     lineHeight: vars.buttonSmallLineHeight,
   },
   M: {
     height: vars.buttonMediumHeight,
     minWidth: vars.buttonMediumMinWidth,
-    padding: `${vars.buttonMediumPaddingY} ${vars.buttonMediumPaddingX}`,
+    paddingY: vars.buttonMediumPaddingY,
+    paddingX: vars.buttonMediumPaddingX,
     fontSize: vars.buttonMediumFontSize,
     lineHeight: vars.buttonMediumLineHeight,
   },
   L: {
     height: vars.buttonLargeHeight,
     minWidth: vars.buttonLargeMinWidth,
-    padding: `${vars.buttonLargePaddingY} ${vars.buttonLargePaddingX}`,
+    paddingY: vars.buttonLargePaddingY,
+    paddingX: vars.buttonLargePaddingX,
     fontSize: vars.buttonLargeFontSize,
     lineHeight: vars.buttonLargeLineHeight,
   }
@@ -105,5 +108,30 @@ export const variantVariants = styleVariants({
       color: vars.buttonTextTextColorDisabled,
       cursor: 'not-allowed',
     },
+  },
+});
+
+export const icon = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+
+  width: '1em',
+  height: '1em',
+
+  selectors: {
+    '[dir="rtl"] &.calendar-icon': {
+      transform: 'none',
+    },
+  },
+});
+
+export const densityVariants = styleVariants({
+  default: {},
+
+  compact: {
+    paddingInlineStart: vars.buttonCompactPaddingInlineStart,
+    paddingInlineEnd: vars.buttonCompactPaddingInlineEnd,
   },
 });

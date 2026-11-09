@@ -8,6 +8,7 @@ import './styles/DatePicker.variables.css';
 
 import { themeClass, vars } from './theme/theme.css';
 import { ThemeProvider } from './theme/ThemeProvider';
+import { CalendarIcon } from './components/CalendarIcon/CalendarIcon';
 
 function App() {
   const variants = ['fill', 'outline', 'text'] as const;
@@ -37,6 +38,7 @@ function App() {
             <div className="row-title">{variant}</div>
             {sizes.map((size) => (
               <div className="button-item" key={size}>
+                <Button variant={variant} size={size} density='compact' startIcon={< CalendarIcon />}>Кнопка с Icon</Button>
                 <Button variant={variant} size={size}>Кнопка</Button>
                 <Button variant={variant} size={size} disabled>Кнопка</Button>
                 <Button variant={variant} size={size} as='a' href='/'>Ссылка</Button>

@@ -7,11 +7,15 @@ import * as styles from './Button.css';
 
 export type ButtonVariant = 'fill' | 'outline' | 'text';
 export type ButtonSize = 'S' | 'M' | 'L';
+export type ButtonDensity = 'default' | 'compact';
 
 type BaseProps = {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  children: ReactNode;
+  density?: ButtonDensity;
+  children?: ReactNode;
+  startIcon?: ReactNode;
+  endIcon?: ReactNode;
 };
 
 type AsButtonProps = BaseProps & {
@@ -32,24 +36,47 @@ export const Button = (props: ButtonProps) => {
     variant = 'fill',
     size = 'M',
     className = '',
+    density = 'default',
     children,
+    startIcon,
+    endIcon,
   } = props;
 
   const buttonClasses = [
     styles.button,
     styles.variantVariants[variant],
     styles.sizeVariants[size],
+    styles.densityVariants[density],
     className,
   ]
     .filter(Boolean)
     .join(' ');
 
+
+  const content = (
+    <>
+      {startIcon && (
+        <span className={styles.icon} aria-hidden="true">
+          {startIcon}
+        </span>
+      )}
+
+      {children}
+
+      {endIcon && (
+        <span className={styles.icon} aria-hidden="true">
+          {endIcon}
+        </span>
+      )}
+    </>
+  );
+
   if (props.as === 'a') {
-    const { as, ref, ...rest } = props;
+    const { as, ref, startIcon, endIcon, ...rest } = props;
 
     return (
       <a ref={ref} className={buttonClasses} {...rest}>
-        {children}
+        {content}
       </a>
     );
   }
@@ -58,7 +85,7 @@ export const Button = (props: ButtonProps) => {
 
   return (
     <button ref={ref} type={type} className={buttonClasses} {...rest}>
-      {children}
+      {content}
     </button>
   );
 
