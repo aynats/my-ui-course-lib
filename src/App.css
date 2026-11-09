@@ -68,3 +68,8 @@
   gap: 20px;
   align-items: flex-start;
 }
+
+.calendar-type-select {
+  display: flex;
+  gap: 8px;
+}

@@ -6,10 +6,26 @@ import './App.css';
 import { DatePicker } from './components/DatePicker/DatePicker';
 import './styles/DatePicker.variables.css';
 
-import { themeClass, vars } from './theme/theme.css';
 import { ThemeProvider } from './theme/ThemeProvider';
+import type { Theme } from './theme/ThemeProvider';
 import { CalendarIcon } from './components/CalendarIcon/CalendarIcon';
 import { Calendar } from './components/Calendar/Calendar';
+
+import {
+  arEG,
+  enUS,
+  LocaleContext,
+  ruRU,
+} from './components/Calendar/locale';
+import { startOfDay, startOfMonth } from './components/Calendar/calendar.utils';
+
+const locales = {
+  'ru-RU': ruRU,
+  'en-US': enUS,
+  'ar-EG': arEG,
+};
+
+type LocaleKey = keyof typeof locales;
 
 function App() {
   const variants = ['fill', 'outline', 'text'] as const;
@@ -18,15 +34,19 @@ function App() {
   const testButtonRef = React.useRef<HTMLButtonElement>(null);
   const testInputRefButton = React.useRef<HTMLInputElement>(null);
 
-  console.log(themeClass);
-  console.log(vars);
+  const [date, setDate] = useState<Date | null>(() => startOfDay(new Date()),);
 
-  const [date, setDate] = useState<Date | null>(
-    new Date(2026, 10, 17),
-  );
+  const [month, setMonth] = useState(() => startOfMonth(date ?? new Date()),);
+
+  const [localeKey, setLocaleKey] = useState<LocaleKey>('ru-RU');
+
+  const [theme, setTheme] = useState<Theme>('light');
+
+  const locale = locales[localeKey];
+
 
   return (
-    <div className={themeClass}>
+    <ThemeProvider theme={theme}>
       <div className="ref-example">
         <input type="text" ref={testInputRefButton} className="ref-input" name="input" />
         <Button ref={testButtonRef} onClick={() => {
@@ -109,25 +129,48 @@ function App() {
 
       <div className='calendar-wrapper'>
         <h2>Calendar</h2>
-        <div className={`calendar-row ${themeClass}`}>
-          <Calendar
-            value={date}
-            onValueChange={setDate}
-            locale={"ru-RU"}
-          />
+        <label className='calendar-type-select'>
+          Язык
 
-          <Calendar
-            value={date}
-            onValueChange={setDate}
-            locale={"en-US"}
-          />
+          <select
+            value={localeKey}
+            onChange={(event) =>
+              setLocaleKey(
+                event.target.value as LocaleKey,
+              )
+            }
+          >
+            <option value="ru-RU">Русский</option>
+            <option value="en-US">English</option>
+            <option value="ar-EG">العربية</option>
+          </select>
+        </label>
 
-          <Calendar
-            value={date}
-            onValueChange={setDate}
-            locale={"ar-EG"}
-          />
-        </div>
+        <label className='calendar-type-select'>
+          Тема
+
+          <select
+            value={theme}
+            onChange={(event) =>
+              setTheme(event.target.value as Theme)
+            }
+          >
+            <option value="light">Светлая</option>
+            <option value="dark">Тёмная</option>
+          </select>
+        </label>
+
+        <LocaleContext.Provider value={locale}>
+          <div dir={locale.dir}>
+            <Calendar
+              value={date}
+              onValueChange={setDate}
+              month={month}
+              onMonthChange={setMonth}
+            />
+          </div>
+        </LocaleContext.Provider>
+
       </div>
 
       <div className="datepicker-wrapper">
@@ -168,7 +211,7 @@ function App() {
           />
         </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 }
 

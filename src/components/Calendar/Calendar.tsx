@@ -1,76 +1,80 @@
-import type { CalendarLocale } from './locale';
-
-import { useEffect, useId, useRef, useState, } from 'react';
-
+import { useEffect, useId, useRef, useState, useMemo, } from 'react';
 import type { KeyboardEvent } from 'react';
-
-import { Button } from '../Button/Button';
-
 import {
-  addDays,
-  addMonths,
-  getDateKey,
-  getMonthWeeks,
-  isDayDisabled,
-  isSameDay,
-  startOfDay,
-  startOfMonth,
+  addDays, addMonths, getDateKey, getMonthWeeks, isDayDisabled,
+  isSameDay, startOfDay, startOfMonth,
 } from './calendar.utils';
 
 import {
-  createCalendarFormatters, formatMonthTitle, getWeekdayLabels, localeConfig,
+  createCalendarFormatters, formatMonthTitle, getWeekdayLabels, useLocale,
 } from './locale';
 
 import * as styles from './Calendar.css';
+
+import { Button } from '../Button/Button';
 import { CalendarIcon } from '../CalendarIcon/CalendarIcon';
+import type { CalendarProps } from './Calendar.types';
 
-export type CalendarProps = {
-  value: Date | null;
-  onValueChange: (value: Date) => void;
-
-  locale?: CalendarLocale;
-
-  minDate?: Date;
-  maxDate?: Date;
-  isDateDisabled?: (date: Date) => boolean;
-
-  defaultMonth?: Date;
-
-  className?: string;
-};
+function isSameMonth(first: Date, second: Date): boolean {
+  return (
+    first.getFullYear() === second.getFullYear() &&
+    first.getMonth() === second.getMonth()
+  );
+}
 
 export const Calendar = ({
   value,
   onValueChange,
-  locale = 'ru-RU',
+  month: controlledMonth,
+  onMonthChange,
   minDate,
   maxDate,
   isDateDisabled,
-  defaultMonth,
+  autoFocus = false,
   className,
 }: CalendarProps) => {
+  const locale = useLocale();
+  const { messages } = locale;
+
   const titleId = useId();
 
-  const config = localeConfig[locale];
-  const formatters = createCalendarFormatters(locale);
-  const weekdays = getWeekdayLabels(locale);
+  const formatters = useMemo(
+    () => createCalendarFormatters(locale.locale),
+    [locale.locale],
+  );
+  const weekdays = getWeekdayLabels(locale, formatters);
 
-  const [month, setMonth] = useState(() =>
-    startOfMonth(defaultMonth ?? value ?? new Date()),
+  const [internalMonth, setInternalMonth] = useState(() =>
+    startOfMonth(value ?? new Date()),
   );
 
-  const [focusedDate, setFocusedDate] = useState(() =>
-    startOfDay(value ?? defaultMonth ?? new Date()),
+  const month = startOfMonth(
+    controlledMonth ?? internalMonth,
   );
+
+
+  const [focusedDate, setFocusedDate] = useState(() => {
+    const initialMonth = startOfMonth(
+      controlledMonth ?? value ?? new Date(),
+    );
+
+    const initialDay = value ?? new Date();
+
+    return isSameMonth(initialDay, initialMonth)
+      ? startOfDay(initialDay)
+      : initialMonth;
+  });
 
   const dayRefs = useRef(
     new Map<string, HTMLButtonElement>(),
   );
 
-  const shouldMoveFocus = useRef(false);
+  const pendingFocus = useRef<Date | null>(
+    autoFocus ? focusedDate : null,
+  );
 
   const today = startOfDay(new Date());
-  const weeks = getMonthWeeks(month, config.weekStartsOn);
+  const weeks = getMonthWeeks(month, locale.firstDayOfWeek);
 
   const restrictions = {
     minDate,
@@ -78,33 +82,45 @@ export const Calendar = ({
     isDateDisabled,
   };
 
-  const focusedDateIsVisible =
-    focusedDate.getFullYear() === month.getFullYear() &&
-    focusedDate.getMonth() === month.getMonth();
+  const visibleValue =
+    value && isSameMonth(value, month)
+      ? value
+      : null;
 
-  const valueIsVisible =
-    value !== null &&
-    value.getFullYear() === month.getFullYear() &&
-    value.getMonth() === month.getMonth();
-
-  // Один день участвует в обычной Tab-навигации.
-  const tabStopDate = focusedDateIsVisible
+  const tabStopDate = isSameMonth(focusedDate, month)
     ? focusedDate
-    : valueIsVisible
-      ? value!
-      : month;
+    : visibleValue ?? month;
 
   useEffect(() => {
-    if (!shouldMoveFocus.current) {
+    const target = pendingFocus.current;
+
+    if (!target) {
       return;
     }
 
-    dayRefs.current
-      .get(getDateKey(focusedDate))
-      ?.focus();
+    const node = dayRefs.current.get(getDateKey(target));
 
-    shouldMoveFocus.current = false;
-  }, [focusedDate, month]);
+    if (!node) {
+      return;
+    }
+
+    pendingFocus.current = null;
+    node.focus();
+  });
+
+  const changeMonth = (date: Date) => {
+    const nextMonth = startOfMonth(date);
+
+    if (isSameMonth(nextMonth, month)) {
+      return;
+    }
+
+    if (controlledMonth === undefined) {
+      setInternalMonth(nextMonth);
+    }
+
+    onMonthChange?.(nextMonth);
+  };
 
   const selectDate = (date: Date) => {
     if (isDayDisabled(date, restrictions)) {
@@ -115,24 +131,27 @@ export const Calendar = ({
   };
 
   const moveFocus = (date: Date) => {
-    shouldMoveFocus.current = true;
+    pendingFocus.current = date;
 
     setFocusedDate(date);
-    setMonth(startOfMonth(date));
+    changeMonth(date);
   };
 
   const showPreviousMonth = () => {
-    setMonth((currentMonth) => addMonths(currentMonth, -1));
+    pendingFocus.current = null;
+    changeMonth(addMonths(month, -1));
   };
 
   const showNextMonth = () => {
-    setMonth((currentMonth) => addMonths(currentMonth, 1));
+    pendingFocus.current = null;
+    changeMonth(addMonths(month, 1));
   };
 
   const goToToday = () => {
-    setMonth(startOfMonth(today));
-    setFocusedDate(today);
+    pendingFocus.current = null;
 
+    changeMonth(today);
+    setFocusedDate(today);
     selectDate(today);
   };
 
@@ -146,14 +165,14 @@ export const Calendar = ({
       case 'ArrowLeft':
         targetDate = addDays(
           date,
-          config.direction === 'rtl' ? 1 : -1,
+          locale.dir === 'rtl' ? 1 : -1,
         );
         break;
 
       case 'ArrowRight':
         targetDate = addDays(
           date,
-          config.direction === 'rtl' ? -1 : 1,
+          locale.dir === 'rtl' ? -1 : 1,
         );
         break;
 
@@ -167,7 +186,7 @@ export const Calendar = ({
 
       case 'Home': {
         const offset =
-          (date.getDay() - config.weekStartsOn + 7) % 7;
+          (date.getDay() - locale.firstDayOfWeek + 7) % 7;
 
         targetDate = addDays(date, -offset);
         break;
@@ -175,7 +194,7 @@ export const Calendar = ({
 
       case 'End': {
         const offset =
-          (date.getDay() - config.weekStartsOn + 7) % 7;
+          (date.getDay() - locale.firstDayOfWeek + 7) % 7;
 
         targetDate = addDays(date, 6 - offset);
         break;
@@ -183,18 +202,20 @@ export const Calendar = ({
 
       case 'PageUp':
       case 'PageDown': {
-        const offset = event.key === 'PageUp' ? -1 : 1;
-        const targetMonth = addMonths(date, offset);
+        const offset =
+          event.key === 'PageUp' ? -1 : 1;
+
+        const nextMonth = addMonths(date, offset);
 
         const lastDay = new Date(
-          targetMonth.getFullYear(),
-          targetMonth.getMonth() + 1,
+          nextMonth.getFullYear(),
+          nextMonth.getMonth() + 1,
           0,
         ).getDate();
 
         targetDate = new Date(
-          targetMonth.getFullYear(),
-          targetMonth.getMonth(),
+          nextMonth.getFullYear(),
+          nextMonth.getMonth(),
           Math.min(date.getDate(), lastDay),
         );
         break;
@@ -210,7 +231,7 @@ export const Calendar = ({
 
   const iconClassName = [
     styles.navigationIcon,
-    config.direction === 'rtl' && styles.mirroredIcon,
+    locale.dir === 'rtl' && styles.mirroredIcon,
   ]
     .filter(Boolean)
     .join(' ');
@@ -220,15 +241,14 @@ export const Calendar = ({
       className={[styles.calendar, className]
         .filter(Boolean)
         .join(' ')}
-      dir={config.direction}
-      lang={locale}
-      aria-label={config.messages.calendar}
+      dir={locale.dir}
+      lang={locale.locale}
     >
       <div className={styles.header}>
         <button
           type="button"
           className={styles.navigationButton}
-          aria-label={config.messages.previousMonth}
+          aria-label={messages.calendar.prevMonth}
           onClick={showPreviousMonth}
         >
           <svg
@@ -254,13 +274,13 @@ export const Calendar = ({
           aria-live="polite"
           aria-atomic="true"
         >
-          {formatMonthTitle(month, locale)}
+          {formatMonthTitle(month, locale.locale, formatters)}
         </h2>
 
         <button
           type="button"
           className={styles.navigationButton}
-          aria-label={config.messages.nextMonth}
+          aria-label={messages.calendar.nextMonth}
           onClick={showNextMonth}
         >
           <svg
@@ -324,10 +344,9 @@ export const Calendar = ({
                 restrictions,
               );
 
-              const weekend: boolean =
-                config.weekendDays.some(
-                  (day) => day === date.getDay(),
-                );
+              const weekend = locale.weekend.includes(
+                date.getDay(),
+              );
 
               return (
                 <div
@@ -384,7 +403,7 @@ export const Calendar = ({
         <span className={styles.selectedDate}>
           {value
             ? formatters.footer.format(value)
-            : config.messages.noDateSelected}
+            : null}
         </span>
 
         <Button
@@ -394,7 +413,7 @@ export const Calendar = ({
           startIcon={<CalendarIcon />}
           onClick={goToToday}
         >
-          {config.messages.today}
+          {messages.calendar.today}
         </Button>
       </div>
     </section>

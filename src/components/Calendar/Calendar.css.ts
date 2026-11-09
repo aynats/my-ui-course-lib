@@ -4,7 +4,8 @@ import { vars } from '../../theme/theme.css';
 export const calendar = style({
 	boxSizing: 'border-box',
 	width: vars.calendarWidth,
-	padding: vars.calendarPadding,
+	paddingBlock: vars.calendarPadding,
+	paddingInline: vars.calendarPadding,
 
 	border: `${vars.calendarBorderWidth} solid ${vars.calendarBorderColor}`,
 	borderRadius: vars.calendarBorderRadius,
@@ -36,6 +37,7 @@ export const navigationButton = style({
 
 	width: vars.calendarNavigationSize,
 	height: vars.calendarNavigationSize,
+	boxSizing: 'border-box',
 
 	padding: 0,
 	border: `${vars.calendarBorderWidth} solid ${vars.calendarTextColor}`,
@@ -155,7 +157,9 @@ export const day = style({
 export const todayDot = style({
 	position: 'absolute',
 	insetBlockEnd: vars.calendarTodayDotOffset,
-
+	insetInline: 0,
+	marginInline: 'auto',
+	
 	width: vars.calendarTodayDotSize,
 	height: vars.calendarTodayDotSize,
 	borderRadius: '50%',

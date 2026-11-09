@@ -1,7 +1,7 @@
 
-import { createTheme } from '@vanilla-extract/css';
+import { createGlobalTheme } from '@vanilla-extract/css';
 
-export const [themeClass, vars] = createTheme({
+const lightTokens = {
   buttonBorderRadius: '10px',
   buttonGap: '8px',
   buttonFontFamily:
@@ -29,22 +29,22 @@ export const [themeClass, vars] = createTheme({
 
   buttonSmallHeight: '36px',
   buttonSmallMinWidth: '140px',
-  buttonSmallPaddingX: '16px',
-  buttonSmallPaddingY: '0px',
+  buttonSmallPaddingInline: '16px',
+  buttonSmallPaddingBlock: '0px',
   buttonSmallFontSize: '14px',
   buttonSmallLineHeight: '20px',
 
   buttonMediumHeight: '44px',
   buttonMediumMinWidth: '140px',
-  buttonMediumPaddingX: '20px',
-  buttonMediumPaddingY: '0px',
+  buttonMediumPaddingInline: '20px',
+  buttonMediumPaddingBlock: '0px',
   buttonMediumFontSize: '16px',
   buttonMediumLineHeight: '24px',
 
   buttonLargeHeight: '52px',
   buttonLargeMinWidth: '150px',
-  buttonLargePaddingX: '24px',
-  buttonLargePaddingY: '0px',
+  buttonLargePaddingInline: '24px',
+  buttonLargePaddingBlock: '0px',
   buttonLargeFontSize: '18px',
   buttonLargeLineHeight: '28px',
 
@@ -80,7 +80,7 @@ export const [themeClass, vars] = createTheme({
   calendarFooterFontWeight: '400',
 
   calendarSectionGap: '12px',
-  
+
   calendarWeekGap: '4px',
 
   calendarWeekdayHeight: '28px',
@@ -105,4 +105,56 @@ export const [themeClass, vars] = createTheme({
   calendarNavigationIconSize: '12px',
 
   calendarFooterPaddingBlock: '16px',
-});
+};
+
+
+export const vars = createGlobalTheme(
+  ':root, [data-theme="light"]',
+  lightTokens,
+);
+
+const darkTokens = {
+  ...lightTokens,
+
+  buttonFillBg: '#FAFAFA',
+  buttonFillBgHover: '#E4E4E7',
+  buttonFillBgActive: '#D4D4D8',
+  buttonFillBgDisabled: '#52525B',
+  buttonFillTextColor: '#18181B',
+
+  buttonOutlineBorderColor: '#A1A1AA',
+  buttonOutlineTextColor: '#FAFAFA',
+  buttonOutlineBgHover: '#27272A',
+  buttonOutlineBgActive: '#3F3F46',
+  buttonOutlineBorderDisabled: '#52525B',
+  buttonOutlineTextColorDisabled: '#71717A',
+
+  buttonTextTextColor: '#FAFAFA',
+  buttonTextBgHover: '#27272A',
+  buttonTextBgActive: '#3F3F46',
+  buttonTextTextColorDisabled: '#71717A',
+
+  outlineColor: '#A78BFA',
+
+  calendarBg: '#18181B',
+  calendarBorderColor: '#3F3F46',
+
+  calendarTextColor: '#FAFAFA',
+  calendarMutedTextColor: '#A1A1AA',
+  calendarWeekendTextColor: '#A1A1AA',
+  calendarDisabledTextColor: '#52525B',
+
+  calendarDayHoverBg: '#27272A',
+  calendarDayActiveBg: '#3F3F46',
+
+  calendarSelectedBg: '#FAFAFA',
+  calendarSelectedTextColor: '#18181B',
+
+  calendarFocusColor: '#FAFAFA',
+} satisfies typeof lightTokens;
+
+createGlobalTheme(
+  '[data-theme="dark"]',
+  vars,
+  darkTokens,
+);

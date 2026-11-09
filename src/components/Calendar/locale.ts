@@ -1,154 +1,154 @@
-export type CalendarLocale = 'ru-RU' | 'en-US' | 'ar-EG';
+import { createContext, useContext } from 'react';
 
-type LocaleConfig = {
-	direction: 'ltr' | 'rtl';
-	weekStartsOn: number;
-	weekendDays: readonly number[];
-	weekdayFormat: 'short' | 'narrow';
-	numberingSystem: 'latn' | 'arab';
+export type Locale = {
+	locale: string;
+	dir: 'ltr' | 'rtl';
+
+	firstDayOfWeek: number;
+	weekend: number[];
 
 	messages: {
-		today: string;
-		previousMonth: string;
-		nextMonth: string;
-		calendar: string;
-		noDateSelected: string;
+		calendar: {
+			today: string;
+			prevMonth: string;
+			nextMonth: string;
+		};
 	};
 };
 
-export const localeConfig = {
-	'ru-RU': {
-		direction: 'ltr',
-		weekStartsOn: 1,
-		weekendDays: [0, 6],
-		weekdayFormat: 'short',
-		numberingSystem: 'latn',
+export const ruRU: Locale = {
+	locale: 'ru-RU',
+	dir: 'ltr',
+	firstDayOfWeek: 1,
+	weekend: [6, 0],
 
-		messages: {
+	messages: {
+		calendar: {
 			today: 'Сегодня',
-			previousMonth: 'Предыдущий месяц',
+			prevMonth: 'Предыдущий месяц',
 			nextMonth: 'Следующий месяц',
-			calendar: 'Календарь',
-			noDateSelected: 'Дата не выбрана',
 		},
 	},
+};
 
-	'en-US': {
-		direction: 'ltr',
-		weekStartsOn: 0,
-		weekendDays: [0, 6],
-		weekdayFormat: 'short',
-		numberingSystem: 'latn',
+export const enUS: Locale = {
+	locale: 'en-US',
+	dir: 'ltr',
+	firstDayOfWeek: 0,
+	weekend: [6, 0],
 
-		messages: {
+	messages: {
+		calendar: {
 			today: 'Today',
-			previousMonth: 'Previous month',
+			prevMonth: 'Previous month',
 			nextMonth: 'Next month',
-			calendar: 'Calendar',
-			noDateSelected: 'No date selected',
 		},
 	},
+};
 
-	'ar-EG': {
-		direction: 'rtl',
-		weekStartsOn: 6,
-		weekendDays: [5, 6],
-		weekdayFormat: 'narrow',
-		numberingSystem: 'arab',
+export const arEG: Locale = {
+	locale: 'ar-EG',
+	dir: 'rtl',
+	firstDayOfWeek: 6,
+	weekend: [5, 6],
 
-		messages: {
+	messages: {
+		calendar: {
 			today: 'اليوم',
-			previousMonth: 'الشهر السابق',
+			prevMonth: 'الشهر السابق',
 			nextMonth: 'الشهر التالي',
-			calendar: 'التقويم',
-			noDateSelected: 'لم يتم اختيار تاريخ',
 		},
 	},
-} satisfies Record<CalendarLocale, LocaleConfig>;
+};
 
-export function createCalendarFormatters(locale: CalendarLocale) {
-	const config = localeConfig[locale];
+export const LocaleContext = createContext<Locale>(ruRU);
 
-	const options = {
+export const useLocale = () => useContext(LocaleContext);
+
+export function createCalendarFormatters(locale: string) {
+	const options: Intl.DateTimeFormatOptions = {
 		calendar: 'gregory',
-		numberingSystem: config.numberingSystem,
+		numberingSystem: locale === 'ar-EG' ? 'arab' : 'latn',
 	};
-
-	const month = new Intl.DateTimeFormat(locale, {
-		...options,
-		month: 'long',
-	});
-
-	const year = new Intl.DateTimeFormat(locale, {
-		...options,
-		year: 'numeric',
-	});
-
-	const weekday = new Intl.DateTimeFormat(locale, {
-		...options,
-		weekday: config.weekdayFormat,
-	});
-
-	const fullWeekday = new Intl.DateTimeFormat(locale, {
-		...options,
-		weekday: 'long',
-	});
-
-	const day = new Intl.DateTimeFormat(locale, {
-		...options,
-		day: 'numeric',
-	});
-	
-	const footerMonthFormat = locale === 'en-US' ? 'short' : 'long';
 
 	const footerFormatter = new Intl.DateTimeFormat(locale, {
 		...options,
 		day: 'numeric',
-		month: footerMonthFormat,
+		month: locale === 'en-US' ? 'short' : 'long',
 		year: 'numeric',
 	});
 
 	const footer = {
-		format: (date: Date) => {
+		format(date: Date): string {
+			if (locale !== 'ru-RU') {
+				return footerFormatter.format(date);
+			}
+
 			return footerFormatter
 				.formatToParts(date)
-				.filter((part) => {
-					return !(part.type === 'literal' && part.value.includes('г'));
+				.map((part) => {
+					if (part.type === 'literal') {
+						return part.value.replace(/\s*г\.\s*$/u, '');
+					}
+
+					return part.value;
 				})
-				.map((part) => part.value)
 				.join('')
 				.trim();
 		},
 	};
 
-	const fullDate = new Intl.DateTimeFormat(locale, {
-		...options,
-		weekday: 'long',
-		day: 'numeric',
-		month: 'long',
-		year: 'numeric',
-	});
-
 	return {
-		month,
-		year,
-		weekday,
-		fullWeekday,
-		day,
+		month: new Intl.DateTimeFormat(locale, {
+			...options,
+			month: 'long',
+		}),
+
+		year: new Intl.DateTimeFormat(locale, {
+			...options,
+			year: 'numeric',
+		}),
+
+		weekday: new Intl.DateTimeFormat(locale, {
+			...options,
+			weekday: locale === 'ar-EG' ? 'narrow' : 'short',
+		}),
+
+		fullWeekday: new Intl.DateTimeFormat(locale, {
+			...options,
+			weekday: 'long',
+		}),
+
+		day: new Intl.DateTimeFormat(locale, {
+			...options,
+			day: 'numeric',
+		}),
+
 		footer,
-		fullDate,
+		
+		fullDate: new Intl.DateTimeFormat(locale, {
+			...options,
+			weekday: 'long',
+			day: 'numeric',
+			month: 'long',
+			year: 'numeric',
+		}),
 	};
 }
 
+type CalendarFormatters =
+	ReturnType<typeof createCalendarFormatters>;
+
 export function formatMonthTitle(
 	date: Date,
-	locale: CalendarLocale,
+	locale: string,
+	formatters = createCalendarFormatters(locale),
 ): string {
-	const formatters = createCalendarFormatters(locale);
-
 	const month = formatters.month.format(date);
+
 	const capitalizedMonth =
-		month.charAt(0).toLocaleUpperCase(locale) + month.slice(1);
+		month.charAt(0).toLocaleUpperCase(locale) +
+		month.slice(1);
 
 	const year = formatters.year
 		.formatToParts(date)
@@ -159,13 +159,14 @@ export function formatMonthTitle(
 	return `${capitalizedMonth} ${year}`;
 }
 
-export function getWeekdayLabels(locale: CalendarLocale) {
-	const config = localeConfig[locale];
-	const formatters = createCalendarFormatters(locale);
-
+export function getWeekdayLabels(
+	locale: Locale,
+	formatters: CalendarFormatters =
+		createCalendarFormatters(locale.locale),
+) {
 	return Array.from({ length: 7 }, (_, index) => {
 		const weekdayIndex =
-			(config.weekStartsOn + index) % 7;
+			(locale.firstDayOfWeek + index) % 7;
 
 		const date = new Date(2024, 0, 7 + weekdayIndex);
 
